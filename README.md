@@ -10,3 +10,7 @@ Features to come:
 - Weather and position data from ongoing NASA Mars missions
 
 Developed using PyQt5
+
+Install PyQt5 using instructoins found on http://pyqt.sourceforge.net/Docs/PyQt5/installation.html
+
+
