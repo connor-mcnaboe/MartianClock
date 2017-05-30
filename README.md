@@ -12,6 +12,6 @@ Features to come:
 
 Developed using PyQt5
 
-Install PyQt5 using instructoins found on http://pyqt.sourceforge.net/Docs/PyQt5/installation.html
+Install PyQt5 using instructions found on http://pyqt.sourceforge.net/Docs/PyQt5/installation.html
 
 
