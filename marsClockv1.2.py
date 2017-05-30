@@ -153,7 +153,47 @@ class MartianTime(object):
 		
 		mctClockTime = [mctHours , mctMin ,  mctSec]
 		return mctClockTime
+#------------------------------#
+# Local Mean Solar time widget #
+#------------------------------#
 
+class LocalSolarTime(QWidget): 
+	
+	def __init__(self):
+		super().__init__()
+		self.initUI()
+		
+	def initUI(self): 
+		
+		self.timer = QTimer(self)
+		self.timer.timeout.connect(self.localClock)
+		self.timer.start(10)
+		
+		self.lcd = QLCDNumber(self)
+		self.lcd.resize(400, 100)
+		self.lcd.setDigitCount(8)
+		self.lcd.display("Hours" + ":" + "Min" + ":" + "Sec") 
+		self.lcd.setStyleSheet("background-image: url(./images/curiositySelfie.jpg)")
+
+		
+	def localClock(self): 
+		 
+		self.millis = MartianTime.currentTimeMillis()
+		self.jdUT = MartianTime.julianDateUT(self.millis)
+		self.jdTT = MartianTime.julianDateTT(self.jdUT)
+		self.deltaj = MartianTime.deltatJ2000(self.jdTT)
+		self.ma = MartianTime.marsMeanAnomaly(self.deltaj)
+		self.fa = MartianTime.angleFictionMeanSun(self.deltaj)
+		self.pert = MartianTime.perturbers(self.deltaj)
+		self.vM = MartianTime.v_M(self.deltaj, self.pert, self.ma)
+		self.l_s = MartianTime.aerocentSolarLong(self.fa, self.vM)
+		self.eot = MartianTime.martianEquationOfTime(self.l_s, self.vM)
+		self.msd = MartianTime.marsSolDate(self.deltaj)
+		self.mct = MartianTime.marsCoordinatedTime(self.jdTT)
+		self.lmst = MartianTime.localMeanSolarTime(self.mct, 222.6)
+		self.lmstClock = MartianTime.clockTime(self.lmst)
+		self.lcd.display(self.lmstClock[0] + ":" + self.lmstClock[1] + ":" + self.lmstClock[2])
+		
 #-------------------------#
 # Martian Sol date widget #
 #-------------------------#
@@ -270,21 +310,27 @@ class LayoutWidget(QWidget):
 		lblMsd = QLabel(self)
 		lblMsd.setText('Mars \nSol \nDate') 
 		lblMsd.setFont(font)
+		lblC = QLabel(self)
+		lblC.setText(' Local \n Mean \n Solar Time') 
+		lblC.setFont(font)
 		
-		
-		
-		marsClock = LcdMct()		
+
+
+		marsClock = LcdMct()
 		msd = SolDate()
+		lmst = LocalSolarTime()
 		
 		grid = QGridLayout()
 		grid.setSpacing(10)
-		
+
 		grid.addWidget(lblMct, 1, 0)
-		grid.addWidget(marsClock, 1, 1, 5, 6)
-		
+		grid.addWidget(marsClock, 1, 1, 5, 5)
+
 		grid.addWidget(lblMsd, 10, 0)
 		grid.addWidget(msd, 10, 1, 5, 5)
 		
+		grid.addWidget(lblC, 15, 0)
+		grid.addWidget(lmst, 15, 1, 5, 5)
 		self.setLayout(grid)
 		
 		
