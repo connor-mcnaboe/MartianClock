@@ -1,6 +1,11 @@
 # MartianClock
 
-A desktop app (for now) that will display the current time along the Martian prime meridian, the Martian sol date and the local mean solr time for the Curiosity Rover. 
+A desktop app (for now) that displays: 
+
+- Time along Martian prime meridian (Mars Coordinated Time)
+- Curiosity local time (Local Mean Solar Time)
+- Mars sol date
+- Distance from Solar System Barycenter
 
 Alogrithims based on Mars24 Sunclock (https://www.giss.nasa.gov/tools/mars24/help/algorithm.html)
 
