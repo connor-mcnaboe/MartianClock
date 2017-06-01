@@ -230,6 +230,8 @@ class LocalSolarTime(QWidget):
 		self.msd = MartianTime.marsSolDate(self.deltaj)
 		self.mct = MartianTime.marsCoordinatedTime(self.jdTT)
 		self.lmst = MartianTime.localMeanSolarTime(self.mct, 222.6)
+		if self.lmst < 0: 
+			self.lmst = 24 + self.lmst
 		self.lmstClock = MartianTime.clockTime(self.lmst)
 		self.lcd.display(self.lmstClock[0] + ":" + self.lmstClock[1] + ":" + self.lmstClock[2])
 		
